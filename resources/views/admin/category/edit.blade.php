@@ -4,11 +4,11 @@
 <div class="container mt-5">
 
     <!-- Success message -->
-    @if(Session::has('success'))
+    {{-- @if(Session::has('success'))
         <div class="alert alert-success">
             {{Session::get('success')}}
         </div>
-    @endif
+    @endif --}}
 
     {{-- {{dd($edit_categories)}} --}}
 
@@ -19,26 +19,26 @@
          {{ csrf_field() }}
          {{-- {{ method_field('PATCH') }} --}}
          {{-- @method('PATCH') --}}
-           
+
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" name="name"  value="{{$edit_categories->name}}">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Slug</label>
                         <input type="text" class="form-control" name="slug" value="{{$edit_categories->slug}}">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control md-textarea rounded-0" name="description" cols="10" rows="4">{{$edit_categories->description}}</textarea>
                     </div>
 
-                
+
 
                     <div class="checkbox">
-                        <label><input type="checkbox" name="status[]" 
+                        <label><input type="checkbox" name="status[]"
                             {{$edit_categories->status == '1' ? 'checked' : ''}} > Status</label>
                     </div>
                     <div class="checkbox">
@@ -49,15 +49,15 @@
 
 
                     <br/>
-                
+
 
                     <div class="file-group">
-                    
+
                         <div class="d-flex justify-content-center">
                         <div class="btn float-left">
                             <img src="{{url($edit_categories->image)}}" alt="" srcset="">
-                            <span>Upload New Category Image</span>
-                            <input type="file" name="image">
+                            <span style="background: gold">Upload New Category Image</span>
+                            <input style="background: gold" type="file" name="image">
                         </div>
                         </div>
                     </div>
@@ -87,5 +87,5 @@
 </div>
 
 
-    
+
 @endsection

@@ -19,8 +19,8 @@ class CategoryController extends Controller
 
         $itemsPerPage = 7;
         $category = Category::orderBy('created_at', 'desc')->paginate($itemsPerPage);
-        return view('admin.category.index', array('categories' => $category, 'title' => 'Categories Display')); 
-        
+        return view('admin.category.index', array('categories' => $category, 'title' => 'Categories Display'));
+
         // $category  =   Category::paginate(3);
         // return view('admin.category.index', ['categories' => $category] );
     }
@@ -37,15 +37,15 @@ class CategoryController extends Controller
 
         if($request->hasFile('image'))
             {
-                
+
                 $files = $request->file('image');
                 $extension = $files->getClientOriginalExtension();
                 $fileName = 'category_' . time() . '.' . $extension;
 
-                $location = '/images/uploads/category/';
-                $files->move(public_path() . $location, $fileName);
+                $location = 'assets/images/uploads/category/';
+                $files->move($location, $fileName);
                 $imageLocation = $location . $fileName;
-                    
+
                 $category->image = $imageLocation;
             }
 
@@ -62,10 +62,7 @@ class CategoryController extends Controller
 
 
             $category->save();
-            return redirect('/dashboard')->with('success', 'Category Successfully Added');
-        // }
-        // else{
-        //     return back()->with('error', 'Product was not Saved Successfully');
+            return redirect('/categories')->with('status', 'Category Successfully Added',  "success");
         }
 
 
@@ -73,35 +70,37 @@ class CategoryController extends Controller
     {
         $category_delete = Category::findOrFail($id);
 
-        // if($category_delete->image)
-        // {
-        //     $path = public_path("images/uploads/category/").$category_delete->image;
-            
-        //     if(File::exists($path))
-        //     {
-        //         File::delete($path);
-        //     }
-        // }
 
-        if(File::exists(public_path('images/uploads/category/sir.jpeg'))){
-            File::delete(public_path('images/sir.jpeg'));
-          }else{
-            dd('File does not exists.');
-          }
+        if($category_delete->image)
+        {
+            // dd($category_delete);
+            $path = $category_delete->image;
+            // dd($path);
+
+            if(File::exists($path))
+            {
+                File::delete($path);
+
+            }
+            // else
+            // {
+            //     dd('File does not exists.');
+            // }
+
+        }
+
+
 
         $category_delete->delete();
         Session::flash('flash_message', 'Categories deleted successfully!');
 
-        return redirect('categories')->with('success', 'Category Deleted Successfully');
+        return redirect('categories')->with('status', 'Category Deleted Successfully', "warning");
 
 
     }
 
     public function edit(Request $request, $id)
     {
-    //     $item = Category::findOrNew($id);
-    //     $item->fill($request->all());
-    //     $item->save();
 
         $edit_category = Category::findOrNew($id);
         return view('admin.category.edit')->with('edit_categories', $edit_category);
@@ -110,7 +109,6 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $id = $request->id;
         $category_update = Category::findOrFail($id);
 
 		// $this->validate($request, array(
@@ -123,17 +121,30 @@ class CategoryController extends Controller
 
         if($request->hasFile('image'))
             {
-                
+                // dd($request->hasFile('image'));
+
+                $path = $category_update->image;
+                // dd($path);
+                if(File::exists($path))
+                {
+                    File::delete($path);
+
+                }
+
                 $files = $request->file('image');
                 $extension = $files->getClientOriginalExtension();
                 $fileName = 'category_' . time() . '.' . $extension;
 
-                $location = '/images/uploads/category/';
-                $files->move(public_path() . $location, $fileName);
+                $location = 'assets/images/uploads/category/';
+                $files->move($location, $fileName);
                 $imageLocation = $location . $fileName;
-                    
+
                 $category_update->image = $imageLocation;
             }
+        else{
+
+        }
+
 
 
             $category_update->name = $request->input('name');
@@ -146,38 +157,14 @@ class CategoryController extends Controller
             $category_update->meta_keywords = $request->input('meta_keywords');
 
 
+        $category_update->save();
+		// Session::flash('flash_message', 'Category updated successfully!');
 
-            $category_update->save();
-            return redirect('/categories')->with('success', 'Category Successfully Added');
-
-    
-        // if ($request->hasFile('image')){
-        //     $image_path = public_path("images/uploads/category/".$category_update->image);
-        //     if (File::exists($image_path)) {
-        //         File::delete($image_path);
-        //     }
-        //     $category_image = $request->file('image');
-        //     $imgName = $category_image->getClientOriginalName();
-        //     $destinationPath = public_path('images/uploads/category/');
-        //     $category_image->move($destinationPath, $imgName);
-        //   } else {
-        //     $imgName = $bannerData->banner_name;
-        //   }
-        
-        //   $bannerData->title = $request->banner_title;
-        //   $bannerData->banner_name = $imgName;
-        //   $bannerData->save();
+		return redirect('categories')->with("status", "Category Deleted Successfully", "warning");
 
 
+            // return redirect('/categories')->with('success', 'Category Successfully Added');
 
-
-		// $input = $request->all();
-
-		// $category_update->fill($input)->save();
-
-		// Session::flash('flash_message', 'News updated successfully!');
-
-		// return redirect()->back();
     }
 
 }

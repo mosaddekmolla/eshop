@@ -19,18 +19,18 @@
             <label>Name</label>
             <input type="text" class="form-control" name="name" >
         </div>
-        
+
         <div class="form-group">
             <label>Slug</label>
             <input type="text" class="form-control" name="slug" >
         </div>
-        
+
         <div class="form-group">
             <label>Description</label>
             <textarea class="form-control md-textarea rounded-0" name="description" cols="10" rows="4"></textarea>
         </div>
 
-      
+
 
         <div class="checkbox">
             <label><input type="checkbox" name="status" value="">Status</label>
@@ -41,14 +41,14 @@
 
 
           <br/>
-       
+
 
         <div class="file-group">
-           
+
             <div class="d-flex justify-content-center">
               <div class="btn float-left">
-                <span>Upload Category Image</span>
-                <input type="file" name="image">
+                <span style="background: gold">Upload Category Image</span>
+                <input style="background: gold" type="file" name="image">
               </div>
             </div>
           </div>
@@ -73,6 +73,6 @@
         <input type="submit" value="Submit" class="btn btn-dark btn-block">
     </form>
 </div>
-    
-    
+
+
 @endsection
