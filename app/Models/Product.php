@@ -32,5 +32,6 @@ class Product extends Model
     public function one_to_one_relation_with_category()
     {
         return $this->belongsTo(Category::class,'category_id', 'id' );
+        // return $this->hasOne(Category::class,  'id', 'category_id' );
     }
 }

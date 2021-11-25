@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Frontend\FrontendController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\FrontendController;
+use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\FrontendController as FrontendFrontendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,23 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [FrontendController::class, 'index']);
+
+Route::get('/category', [FrontendController::class, 'category'])->name('category');
+
+Route::get('/view-category/{slug}', [FrontendController::class, 'category_products_view']);
+
+Route::get('products-details/{category_slug}/{product_slug}', [FrontendController::class, 'product_details']);
+
+Route::post('/add-to-cart', [CartController::class, 'addProductToCart'])->name('addToCart');
+
+Route::delete('remove-from-cart', [CartController::class, 'removeFromCart'])->name('remove.from.cart');
+
+Route::post('update-cart', [CartController::class, 'update'])->name('update.cart');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('cart', [CartController::class, 'viewCart']);
+});
 
 Auth::routes();
 

@@ -1,0 +1,64 @@
+.menu {
+  background-color: #0caadf;
+  padding: 30px 0px;
+}
+.link {
+  text-decoration: none;
+  font-size: 24px;
+  margin-right: 20px;
+  font-weight: 400;
+  color: rgb(199, 21, 21);
+}
+.header {
+  height: 115px;
+}
+.user-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+.user {
+  width: 56px;
+  height: 56px;
+}
+.name {
+  text-decoration: none;
+  color: #fff;
+}
+.link {
+  color: aqua;
+}
+.footer {
+  background: rgb(20, 166, 214);
+  color: #fff;
+  padding: 30px 30px 10px 30px;
+  padding-bottom: 10px;
+  line-height: 10px;
+}
+p {
+  color: rgb(20, 13, 13);
+}
+.logo {
+  width: 70px;
+}
+.number {
+  margin-top: 50px;
+}
+.footer-icon {
+  background-color: #fff;
+  margin-right: 20px;
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.5s ease-out;
+}
+.footer-icon:hover {
+  background: rgba(16, 67, 231, 0.801);
+  /* color: ; */
+}
+.footer a {
+  text-decoration: none;
+  color: rgb(22, 22, 22);
+}

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use PHPUnit\Framework\Constraint\FileExists;
 
 class ProductController extends Controller
 {
@@ -51,7 +51,9 @@ class ProductController extends Controller
             //     $request->input('');
             // }
 
-            $product->category_id = $request->category_id == null ? " " : $product->input('category_id');
+            $product->category_id = $request->input('category_id');
+
+            // $product->category_id = $request->category_id == $product->input('category_id') ?  ;
 
 
             // $product->category_id = $request->has('category_id') ?  ;
@@ -162,6 +164,4 @@ class ProductController extends Controller
         return redirect('products')->with('success', 'Products Deleted Successfully', 'success');
 
     }
-
-
 }
