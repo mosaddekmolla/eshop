@@ -195,7 +195,7 @@
                                 </td>
 
                                 <td class="cart_total">
-                                    <p class="cart_total_price">TOtal</p>
+                                    <p class="cart_total_price">Total</p>
                                 </td>
 
                                 <td class="actions remove-product" data-th="">
@@ -459,7 +459,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
 
     <script type="text/javascript">
@@ -489,43 +490,86 @@
                 }
             });
 
+            $('.fa-times').click(function (e) {
+
+                    var $removeBtn = $(this);
+                    var id = $removeBtn.data('id');
+
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/lineitem/". id,  // or whatever is the URL to the destroy action in the controller
+                        success: function (data) {
+                            $('.cart-data-details__total').remove(); // assumes that the wrapper for each line item is cart-data-details__total
+                        }
+                    });
+
+                    return false;
+            });
+
 
             $(".remove-from-cart").click(function (e) {
 
                 e.preventDefault();
 
-                var prod_id = $(this).parents('.remove-product').find('.prod_id').val();
+                var cart_id = $(this).parents('.remove-product').find('.prod_id').val();
+                // alert(cart_id);
+                // return false;
 
-                $.ajaxSetup({
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-
-                if(confirm("Are you sure want to remove?")) {
+                // if(confirm("Are you sure want to remove?")) {
 
                     $.ajax({
-
+                        _token: '{{ csrf_token() }}',
+                        // url: "/emove-from-cart/" . prod_id,
                         url: '{{ route('remove.from.cart') }}',
 
-                        method: "delete",
+                        type: "POST",
 
                         data: {
-
-                            'product_id': prod_id,
+                            _token: '{{ csrf_token() }}',
+                            'cart_id': cart_id,
 
                         },
 
+                        dataType: 'JSON',
                         success: function (response) {
 
-                            window.location.reload();
+                            // window.location.reload();
                             // alert(response.status);
-                        }
+
+                            let timerInterval
+                            Swal.fire({
+                            title: 'Delete Successfully!',
+                            html: 'I will close in <b></b> milliseconds.',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+                                const b = Swal.getHtmlContainer().querySelector('b')
+                                timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                                }, 100)
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                            }).then((result) => {
+                            /* Read more about handling dismissals below */
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                console.log('I was closed by the timer')
+                            }
+                            });
+
+                            window.location.reload();
+
+
+                        },
+                        // error: function (response) {
+                        //     console.log('Error:', response);
+                        // }
 
                     });
 
-                }
+                // }
 
                 });
 
@@ -567,10 +611,17 @@
                     },
 
                     success: function (response) {
-                        window.location.reload();
                         // swal(response.status);
-                        swal("", response.status, "Success");
 
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'info',
+                            title: 'Cart Updated Successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        window.location.reload();
 
                     }
 

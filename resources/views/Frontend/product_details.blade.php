@@ -926,6 +926,8 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -962,9 +964,17 @@
                     },
                     success:function(response){
                         // alert(response.status);
-                        swal("", response.status, "Success");
+                        // swal(response.status, "Success");
+                        // swal.fire("Done!", results.message, "success");
 
-                    }
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: (response.status),
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                        }
 
                 });
 

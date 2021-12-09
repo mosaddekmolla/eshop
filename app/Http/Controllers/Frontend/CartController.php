@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Cart;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Exists;
 
@@ -54,24 +55,46 @@ class CartController extends Controller
     public function removeFromCart(Request $request)
 
     {
-        $prod_id = $request->input('product_id');
+        // $data =$request->product_id;
+        // echo 'test';
+        // exit;
+        // echo $request->product_id;
+        // exit;
+        // $prod_id = $request->input('product_id');
 
+        // dd($request->all());
+
+
+
+        // echo Auth::id();
+        // exit;
         if(Auth::check())
         {
-
-            if(Cart::where('prod_id', $prod_id)-> where('user_id', Auth::id())->exists())
+            // echo Auth::id();
+            // exit;
+            if(Cart::where('id',$request->cart_id)-> where('user_id', Auth::id())->exists())
             {
-                $cartItem = Cart::where('prod_id', $prod_id)-> where('user_id', Auth::id())->first();
-                $cartItem->remove();
+                $cartItem = Cart::where('id', $request->cart_id)-> where('user_id', Auth::id())->first();
+
+                $cartItem->delete();
                 return response()->json(['status' => 'Product Remove Successfully']);
 
             }
         }
-        else{
-            return response()->json(['status' => 'Login to Continue']);
-        }
-
     }
+
+
+
+        // $data =$request->product_id;
+        // $prod_id = $request->input('product_id');
+        // dd(json_encode($request->product_id));
+        // dd($request->all());
+
+        // return $request['product_id'];
+        // // die(var_dump($data));
+        // Log::info(json_encode($request));
+        // dd($request->input('product_id'));
+        // // dd($prod_id);
 
     public function update(Request $request)
 
